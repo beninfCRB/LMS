@@ -32,4 +32,20 @@ export const commonStyles = StyleSheet.create({
         color: "#575757",
         textAlign: "center"
     },
+    input: {
+        height: 55,
+        marginHorizontal: 16,
+        borderRadius: 8,
+        paddingLeft: 35,
+        fontSize: 16,
+        backgroundColor: "white",
+        color: "#A1A1A1"
+    },
+    errorContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: 16,
+        position: "absolute",
+        top: 60
+    }
 })

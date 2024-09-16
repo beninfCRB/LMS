@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
         backgroundColor: "#2467EC",
         width: wp("92%"),
         paddingVertical: 18,
-        borderRadius: 8,
+        borderRadius: 50,
         marginTop: 40
     },
     buttonText: {

@@ -40,6 +40,6 @@ export const welcomeStyles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 5,
+        borderRadius: 50,
     }
 })
