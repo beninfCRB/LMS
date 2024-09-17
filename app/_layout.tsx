@@ -53,7 +53,10 @@ function RootLayoutNav() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name='index' />
           <Stack.Screen name='(routes)/welcome-intro/index' />
-          <Stack.Screen name='(routes)/login/index' />
+          <Stack.Screen name='(routes)/auth/login/index' />
+          <Stack.Screen name='(routes)/auth/forgot-password/index' />
+          <Stack.Screen name='(routes)/auth/sign-up/index' />
+          <Stack.Screen name='(routes)/auth/verify-account/index' />
         </Stack>
       )}
     </>

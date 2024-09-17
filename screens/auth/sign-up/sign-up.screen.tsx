@@ -1,14 +1,15 @@
 import { View, Text, ScrollView, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
-import { Entypo, FontAwesome, Fontisto, Ionicons, SimpleLineIcons } from '@expo/vector-icons'
+import { Raleway_600SemiBold, Raleway_700Bold } from '@expo-google-fonts/raleway'
+import { useFonts } from 'expo-font'
+import { Nunito_400Regular, Nunito_500Medium, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useFonts, Raleway_700Bold, Raleway_600SemiBold } from '@expo-google-fonts/raleway'
-import { Nunito_400Regular, Nunito_500Medium, Nunito_700Bold, Nunito_600SemiBold } from '@expo-google-fonts/nunito'
-import { loginStyles } from '@/styles/auth/login/login.styles'
-import { commonStyles } from '@/styles/common/common.styles'
+import { Entypo, FontAwesome, Fontisto, Ionicons, SimpleLineIcons } from '@expo/vector-icons'
 import { router } from 'expo-router'
+import { commonStyles } from '@/styles/common/common.styles'
+import { signUpStyles } from '@/styles/auth/sign-up/sign-up.styles'
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false)
     const [buttonSpinner, setButtonSpinner] = useState(false)
     const [userInfo, setUserInfo] = useState({
@@ -90,8 +91,8 @@ export default function LoginScreen() {
         }
     }
 
-    const handleLogin = () => {
-
+    const handleSignUp = () => {
+        router.push("/verifyAccount")
     }
 
     return (
@@ -101,23 +102,23 @@ export default function LoginScreen() {
         >
             <ScrollView>
                 <Image
-                    style={loginStyles.signInImage}
-                    source={require("@/assets/auth/sign_in.png")}
+                    style={signUpStyles.signInImage}
+                    source={require("@/assets/auth/signup.png")}
                 />
-                <Text style={[loginStyles.welcomeText, { fontFamily: "Raleway_700Bold" }]}>Selamat Datang!</Text>
-                <Text style={loginStyles.learningText}>
-                    login ke akun khodam anda
+                <Text style={[signUpStyles.welcomeText, { fontFamily: "Raleway_700Bold" }]}>Ayo Kita Mulai!</Text>
+                <Text style={signUpStyles.learningText}>
+                    buat akun untuk memperolah semua fitur
                 </Text>
-                <View style={loginStyles.inputContainer}>
-                    <View style={loginStyles.containerHeight}>
+                <View style={signUpStyles.inputContainer}>
+                    <View style={signUpStyles.containerHeight}>
                         <TextInput
-                            style={[loginStyles.input, { paddingLeft: 40 }]}
+                            style={[signUpStyles.input, { paddingLeft: 40 }]}
                             keyboardType='email-address'
                             placeholder='example@gmail.com'
                             onChangeText={handleEmailValidation}
                         />
                         <Fontisto
-                            style={loginStyles.icon1}
+                            style={signUpStyles.icon1}
                             name='email'
                             size={20}
                             color={"#A1A1A1"}
@@ -126,20 +127,20 @@ export default function LoginScreen() {
                             errorEmail.email && (
                                 <View style={[commonStyles.errorContainer, { top: 58 }]}>
                                     <Entypo name='cross' size={18} color={"red"} />
-                                    <Text style={loginStyles.errorText}>{errorEmail.email}</Text>
+                                    <Text style={signUpStyles.errorText}>{errorEmail.email}</Text>
                                 </View>
                             )
                         }
                         <View style={{ marginTop: 25 }}>
                             <TextInput
-                                style={loginStyles.input}
+                                style={signUpStyles.input}
                                 keyboardType="default"
                                 secureTextEntry={!isPasswordVisible}
                                 placeholder="********"
                                 onChangeText={handlePasswordValidation}
                             />
                             <TouchableOpacity
-                                style={loginStyles.visibleIcon}
+                                style={signUpStyles.visibleIcon}
                                 onPress={() => setPasswordVisible(!isPasswordVisible)}
                             >
                                 {
@@ -159,7 +160,7 @@ export default function LoginScreen() {
                                 }
                             </TouchableOpacity>
                             <SimpleLineIcons
-                                style={loginStyles.icon2}
+                                style={signUpStyles.icon2}
                                 name='lock'
                                 size={20}
                                 color={"#A1A1A1"}
@@ -169,23 +170,14 @@ export default function LoginScreen() {
                             errorPassword.password && (
                                 <View style={[commonStyles.errorContainer, { top: 138 }]}>
                                     <Entypo name='cross' size={18} color={"red"} />
-                                    <Text style={loginStyles.errorText}>{errorPassword.password}</Text>
+                                    <Text style={signUpStyles.errorText}>{errorPassword.password}</Text>
                                 </View>
                             )
                         }
                     </View>
                     <TouchableOpacity
-                        onPress={() => router.push("/forgot-password")}
-                    >
-                        <Text
-                            style={[loginStyles.forgotSection, { fontFamily: "Nunito_600SemiBold" }]}
-                        >
-                            Lupa Password?
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
                         style={commonStyles.buttonContainer}
-                        onPress={handleLogin}
+                        onPress={handleSignUp}
                     >
                         {
                             buttonSpinner ? (
@@ -194,25 +186,25 @@ export default function LoginScreen() {
                                 <Text
                                     style={{ color: "white", textAlign: "center", fontSize: 16, fontFamily: "Raleway_700Bold" }}
                                 >
-                                    Masuk
+                                    Daftar
                                 </Text>
                             )
                         }
                     </TouchableOpacity>
-                    <View style={loginStyles.auth0Section}>
+                    <View style={signUpStyles.auth0Section}>
                         <FontAwesome name='google' size={24} />
                     </View>
-                    <View style={loginStyles.signUpRedirect}>
+                    <View style={signUpStyles.signUpRedirect}>
                         <Text style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}>
-                            Belum punya akun?
+                            Sudah punya akun?
                         </Text>
                         <TouchableOpacity
-                            onPress={() => router.push("/sign-up")}
+                            onPress={() => router.push("/login")}
                         >
                             <Text
-                                style={[loginStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
+                                style={[signUpStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
                             >
-                                Daftar Akun
+                                Masuk Akun
                             </Text>
                         </TouchableOpacity>
                     </View>

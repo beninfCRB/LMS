@@ -5,7 +5,7 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-export const loginStyles = StyleSheet.create({
+export const signUpStyles = StyleSheet.create({
     signInImage: {
         width: "40%",
         height: 150,

@@ -19,9 +19,11 @@ export const commonStyles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: "#2467EC",
         width: rw(88),
-        height: rh(2.5),
-        borderRadius: 5,
-        marginHorizontal: 5
+        height: rh(5.5),
+        alignSelf: "center",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 50
     },
     title: {
         fontSize: hp("3.5%"),
