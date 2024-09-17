@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { verifyAccountStyle } from '@/styles/auth/verify-account/verify-account.styles'
 import Button from '@/components/buttons/button'
+import { router } from 'expo-router'
 
 export default function VerifyAccountScreen() {
     const [code, setCode] = useState(new Array(4).fill(""))
@@ -50,6 +51,9 @@ export default function VerifyAccountScreen() {
                     onPress={handleSubmit}
                 />
             </View>
+            <TouchableOpacity onPress={() => router.back()}>
+                <Text style={{ fontSize: 16, paddingTop: 20, fontWeight: "700" }}>Kembali Ke Login</Text>
+            </TouchableOpacity>
         </View>
     )
 }
