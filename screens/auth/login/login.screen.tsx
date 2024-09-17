@@ -7,6 +7,7 @@ import { Nunito_400Regular, Nunito_500Medium, Nunito_700Bold, Nunito_600SemiBold
 import { loginStyles } from '@/styles/auth/login/login.styles'
 import { commonStyles } from '@/styles/common/common.styles'
 import { router } from 'expo-router'
+import ButtonActivity from '@/components/buttons/button-activity'
 
 export default function LoginScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false)
@@ -175,7 +176,7 @@ export default function LoginScreen() {
                         }
                     </View>
                     <TouchableOpacity
-                        onPress={() => router.push("/forgot-password")}
+                        onPress={() => router.push("/auth/forgot-password")}
                     >
                         <Text
                             style={[loginStyles.forgotSection, { fontFamily: "Nunito_600SemiBold" }]}
@@ -183,22 +184,12 @@ export default function LoginScreen() {
                             Lupa Password?
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    <ButtonActivity
+                        title='Masuk'
                         style={commonStyles.buttonContainer}
                         onPress={handleLogin}
-                    >
-                        {
-                            buttonSpinner ? (
-                                <ActivityIndicator size={"small"} color={"white"} />
-                            ) : (
-                                <Text
-                                    style={{ color: "white", textAlign: "center", fontSize: 16, fontFamily: "Raleway_700Bold" }}
-                                >
-                                    Masuk
-                                </Text>
-                            )
-                        }
-                    </TouchableOpacity>
+                        spinner={buttonSpinner}
+                    />
                     <View style={loginStyles.auth0Section}>
                         <FontAwesome name='google' size={24} />
                     </View>
@@ -207,7 +198,7 @@ export default function LoginScreen() {
                             Belum punya akun?
                         </Text>
                         <TouchableOpacity
-                            onPress={() => router.push("/sign-up")}
+                            onPress={() => router.push("/auth/sign-up")}
                         >
                             <Text
                                 style={[loginStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}

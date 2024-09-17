@@ -8,6 +8,7 @@ import { Entypo, FontAwesome, Fontisto, Ionicons, SimpleLineIcons } from '@expo/
 import { router } from 'expo-router'
 import { commonStyles } from '@/styles/common/common.styles'
 import { signUpStyles } from '@/styles/auth/sign-up/sign-up.styles'
+import ButtonActivity from '@/components/buttons/button-activity'
 
 export default function SignUpScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false)
@@ -92,7 +93,7 @@ export default function SignUpScreen() {
     }
 
     const handleSignUp = () => {
-        router.push("/verifyAccount")
+        router.push("/auth/verify-account")
     }
 
     return (
@@ -175,22 +176,12 @@ export default function SignUpScreen() {
                             )
                         }
                     </View>
-                    <TouchableOpacity
+                    <ButtonActivity
+                        title='Daftar'
                         style={commonStyles.buttonContainer}
                         onPress={handleSignUp}
-                    >
-                        {
-                            buttonSpinner ? (
-                                <ActivityIndicator size={"small"} color={"white"} />
-                            ) : (
-                                <Text
-                                    style={{ color: "white", textAlign: "center", fontSize: 16, fontFamily: "Raleway_700Bold" }}
-                                >
-                                    Daftar
-                                </Text>
-                            )
-                        }
-                    </TouchableOpacity>
+                        spinner={buttonSpinner}
+                    />
                     <View style={signUpStyles.auth0Section}>
                         <FontAwesome name='google' size={24} />
                     </View>
@@ -199,7 +190,7 @@ export default function SignUpScreen() {
                             Sudah punya akun?
                         </Text>
                         <TouchableOpacity
-                            onPress={() => router.push("/login")}
+                            onPress={() => router.push("/auth/login")}
                         >
                             <Text
                                 style={[signUpStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
