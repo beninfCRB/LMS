@@ -92,7 +92,7 @@ export default function LoginScreen() {
     }
 
     const handleLogin = () => {
-
+        router.push("/auth/verify-account")
     }
 
     return (
@@ -111,27 +111,29 @@ export default function LoginScreen() {
                 </Text>
                 <View style={loginStyles.inputContainer}>
                     <View style={loginStyles.containerHeight}>
-                        <TextInput
-                            style={[loginStyles.input, { paddingLeft: 40 }]}
-                            keyboardType='email-address'
-                            placeholder='example@gmail.com'
-                            onChangeText={handleEmailValidation}
-                        />
-                        <Fontisto
-                            style={loginStyles.icon1}
-                            name='email'
-                            size={20}
-                            color={"#A1A1A1"}
-                        />
-                        {
-                            errorEmail.email && (
-                                <View style={[commonStyles.errorContainer, { top: 58 }]}>
-                                    <Entypo name='cross' size={18} color={"red"} />
-                                    <Text style={loginStyles.errorText}>{errorEmail.email}</Text>
-                                </View>
-                            )
-                        }
-                        <View style={{ marginTop: 25 }}>
+                        <View>
+                            <TextInput
+                                style={[loginStyles.input, { paddingLeft: 40 }]}
+                                keyboardType='email-address'
+                                placeholder='example@gmail.com'
+                                onChangeText={handleEmailValidation}
+                            />
+                            <Fontisto
+                                style={loginStyles.icon1}
+                                name='email'
+                                size={20}
+                                color={"#A1A1A1"}
+                            />
+                            {
+                                errorEmail.email && (
+                                    <View style={[commonStyles.errorContainer, { top: 58 }]}>
+                                        <Entypo name='cross' size={18} color={"red"} />
+                                        <Text style={loginStyles.errorText}>{errorEmail.email}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                        <View>
                             <TextInput
                                 style={loginStyles.input}
                                 keyboardType="default"
@@ -174,38 +176,38 @@ export default function LoginScreen() {
                                 </View>
                             )
                         }
-                    </View>
-                    <TouchableOpacity
-                        onPress={() => router.push("/auth/forgot-password")}
-                    >
-                        <Text
-                            style={[loginStyles.forgotSection, { fontFamily: "Nunito_600SemiBold" }]}
-                        >
-                            Lupa Password?
-                        </Text>
-                    </TouchableOpacity>
-                    <ButtonActivity
-                        title='Masuk'
-                        style={commonStyles.buttonContainer}
-                        onPress={handleLogin}
-                        spinner={buttonSpinner}
-                    />
-                    <View style={loginStyles.auth0Section}>
-                        <FontAwesome name='google' size={24} />
-                    </View>
-                    <View style={loginStyles.signUpRedirect}>
-                        <Text style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}>
-                            Belum punya akun?
-                        </Text>
                         <TouchableOpacity
-                            onPress={() => router.push("/auth/sign-up")}
+                            onPress={() => router.push("/auth/forgot-password")}
                         >
                             <Text
-                                style={[loginStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
+                                style={[loginStyles.forgotSection, { fontFamily: "Nunito_600SemiBold" }]}
                             >
-                                Daftar Akun
+                                Lupa Password?
                             </Text>
                         </TouchableOpacity>
+                        <ButtonActivity
+                            title='Masuk'
+                            style={commonStyles.buttonContainer}
+                            onPress={handleLogin}
+                            spinner={buttonSpinner}
+                        />
+                        <View style={loginStyles.auth0Section}>
+                            <FontAwesome name='google' size={24} />
+                        </View>
+                        <View style={loginStyles.signUpRedirect}>
+                            <Text style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}>
+                                Belum punya akun?
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => router.push("/auth/sign-up")}
+                            >
+                                <Text
+                                    style={[loginStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
+                                >
+                                    Daftar Akun
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </ScrollView>

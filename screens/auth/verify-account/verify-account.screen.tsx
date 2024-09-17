@@ -52,7 +52,7 @@ export default function VerifyAccountScreen() {
                 />
             </View>
             <TouchableOpacity onPress={() => router.back()}>
-                <Text style={{ fontSize: 16, paddingTop: 20, fontWeight: "700" }}>Kembali Ke Login</Text>
+                <Text style={{ fontSize: 16, paddingTop: 20, fontWeight: "700" }}>Kembali Ke Sebelummnya</Text>
             </TouchableOpacity>
         </View>
     )

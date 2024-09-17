@@ -58,7 +58,8 @@ export const loginStyles = StyleSheet.create({
         marginTop: -1
     },
     containerHeight: {
-        height: hp("16%")
+        height: hp("40%"),
+        gap: 25
     },
     forgotSection: {
         marginHorizontal: 16,
@@ -83,6 +84,6 @@ export const loginStyles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 5,
-        marginTop: -10
+        marginTop: 10
     }
 })

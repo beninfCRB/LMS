@@ -14,8 +14,12 @@ export default function SignUpScreen() {
     const [isPasswordVisible, setPasswordVisible] = useState(false)
     const [buttonSpinner, setButtonSpinner] = useState(false)
     const [userInfo, setUserInfo] = useState({
+        name: "",
         email: "",
         password: "",
+    })
+    const [errorName, setErrorName] = useState({
+        name: "",
     })
     const [errorEmail, setErrorEmail] = useState({
         email: "",
@@ -35,6 +39,19 @@ export default function SignUpScreen() {
 
     if (!fonstLoaded && !fontError) {
         return null
+    }
+
+    const handleNameValidation = (value: string) => {
+        const name = value.trim()
+        if (name === "") {
+            setErrorName({ ...errorName, name: "Nama tidak boleh kosong" })
+        } else {
+            setErrorName({
+                ...errorName,
+                name: ""
+            })
+            setUserInfo({ ...userInfo, name })
+        }
     }
 
     const handleEmailValidation = (value: string) => {
@@ -112,27 +129,51 @@ export default function SignUpScreen() {
                 </Text>
                 <View style={signUpStyles.inputContainer}>
                     <View style={signUpStyles.containerHeight}>
-                        <TextInput
-                            style={[signUpStyles.input, { paddingLeft: 40 }]}
-                            keyboardType='email-address'
-                            placeholder='example@gmail.com'
-                            onChangeText={handleEmailValidation}
-                        />
-                        <Fontisto
-                            style={signUpStyles.icon1}
-                            name='email'
-                            size={20}
-                            color={"#A1A1A1"}
-                        />
-                        {
-                            errorEmail.email && (
-                                <View style={[commonStyles.errorContainer, { top: 58 }]}>
-                                    <Entypo name='cross' size={18} color={"red"} />
-                                    <Text style={signUpStyles.errorText}>{errorEmail.email}</Text>
-                                </View>
-                            )
-                        }
-                        <View style={{ marginTop: 25 }}>
+                        <View>
+                            <TextInput
+                                style={[signUpStyles.input, { paddingLeft: 40 }]}
+                                keyboardType='default'
+                                placeholder='user'
+                                onChangeText={handleNameValidation}
+                            />
+                            <FontAwesome
+                                style={signUpStyles.icon1}
+                                name='user'
+                                size={20}
+                                color={"#A1A1A1"}
+                            />
+                            {
+                                errorName.name && (
+                                    <View style={[commonStyles.errorContainer, { top: 58 }]}>
+                                        <Entypo name='cross' size={18} color={"red"} />
+                                        <Text style={signUpStyles.errorText}>{errorName.name}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                        <View>
+                            <TextInput
+                                style={[signUpStyles.input, { paddingLeft: 40 }]}
+                                keyboardType='email-address'
+                                placeholder='example@gmail.com'
+                                onChangeText={handleEmailValidation}
+                            />
+                            <Fontisto
+                                style={signUpStyles.icon1}
+                                name='email'
+                                size={20}
+                                color={"#A1A1A1"}
+                            />
+                            {
+                                errorEmail.email && (
+                                    <View style={[commonStyles.errorContainer, { top: 58 }]}>
+                                        <Entypo name='cross' size={18} color={"red"} />
+                                        <Text style={signUpStyles.errorText}>{errorEmail.email}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                        <View>
                             <TextInput
                                 style={signUpStyles.input}
                                 keyboardType="default"
@@ -169,35 +210,35 @@ export default function SignUpScreen() {
                         </View>
                         {
                             errorPassword.password && (
-                                <View style={[commonStyles.errorContainer, { top: 138 }]}>
+                                <View style={[commonStyles.errorContainer, { top: 215 }]}>
                                     <Entypo name='cross' size={18} color={"red"} />
                                     <Text style={signUpStyles.errorText}>{errorPassword.password}</Text>
                                 </View>
                             )
                         }
-                    </View>
-                    <ButtonActivity
-                        title='Daftar'
-                        style={commonStyles.buttonContainer}
-                        onPress={handleSignUp}
-                        spinner={buttonSpinner}
-                    />
-                    <View style={signUpStyles.auth0Section}>
-                        <FontAwesome name='google' size={24} />
-                    </View>
-                    <View style={signUpStyles.signUpRedirect}>
-                        <Text style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}>
-                            Sudah punya akun?
-                        </Text>
-                        <TouchableOpacity
-                            onPress={() => router.push("/auth/login")}
-                        >
-                            <Text
-                                style={[signUpStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
-                            >
-                                Masuk Akun
+                        <ButtonActivity
+                            title='Daftar'
+                            style={commonStyles.buttonContainer}
+                            onPress={handleSignUp}
+                            spinner={buttonSpinner}
+                        />
+                        <View style={signUpStyles.auth0Section}>
+                            <FontAwesome name='google' size={24} />
+                        </View>
+                        <View style={signUpStyles.signUpRedirect}>
+                            <Text style={{ fontSize: 18, fontFamily: "Raleway_600SemiBold" }}>
+                                Sudah punya akun?
                             </Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => router.push("/auth/login")}
+                            >
+                                <Text
+                                    style={[signUpStyles.signUpSection, { fontFamily: "Raleway_600SemiBold" }]}
+                                >
+                                    Masuk Akun
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
