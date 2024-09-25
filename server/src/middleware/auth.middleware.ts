@@ -9,12 +9,12 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
     
     if (!access_token) {
       return next(
-        new ErrorException("Please login to access this resource", 400)
+        new ErrorException("Silahkan login untuk mengakses sumber daya ini", 400)
       );
     }
     const decoded = jwt.decode(access_token) as JwtPayload
     if (!decoded) {
-      return next(new ErrorException("access token is not valid", 400));
+      return next(new ErrorException("Token akses tidak valid", 400));
     }
 
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
@@ -28,7 +28,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 
       if (!user) {
         return next(
-          new ErrorException("Please login to access this resource", 400)
+          new ErrorException("Silahkan login untuk mengakses sumber daya ini", 400)
         );
       }
 

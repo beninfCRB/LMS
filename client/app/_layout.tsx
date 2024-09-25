@@ -42,8 +42,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
   return (
     <ToastProvider>
       <Stack screenOptions={{ headerShown: false }}>
@@ -53,6 +51,7 @@ function RootLayoutNav() {
         <Stack.Screen name='(routes)/auth/forgot-password/index' />
         <Stack.Screen name='(routes)/auth/sign-up/index' />
         <Stack.Screen name='(routes)/auth/verify-account/index' />
+        <Stack.Screen name='(routes)/course-detail/index' />
       </Stack>
     </ToastProvider>
   );

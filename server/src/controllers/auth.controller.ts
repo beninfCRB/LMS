@@ -43,14 +43,14 @@ export const SignUpController = async (req: Request, res: Response, next: NextFu
       try {
         await sendMail({
           email: user.email,
-          subject: "Activate your account",
+          subject: "Aktivasi Akun Anda",
           template: "activation-mail.ejs",
           data,
         });
 
         res.status(201).json({
           success: true,
-          message: `Please check your email: ${user.email} to activate your account!`,
+          message: `Silahkan periksa email Anda: ${user.email} untuk mengaktifkan akun Anda!`,
           activationToken: activationToken.token,
         });
       } catch (error: any) {
@@ -71,7 +71,7 @@ export const ActivateUserController = async (req: Request, res: Response, next: 
     );
     
     if (newUser.activationCode !== activation_code) {
-       return next(new ErrorException("400","Invalid activation code"));
+       return next(new ErrorException(ErrorCode.Unauthenticated, "Kode aktivasi tidak valid"));
     }
 
     const { name, email, password } = newUser.user;
@@ -79,11 +79,11 @@ export const ActivateUserController = async (req: Request, res: Response, next: 
     const existUser = await UserModel.findOne({ email });
 
     if (existUser) {
-      return next(new ErrorException("400","Email already exist"));
+      return next(new ErrorException("400","Email sudah ada"));
     }
     
     const hash = passwordHash(password);
-    const createUser: IUser = {
+    const createUser = {
       _id: ulid(),
       email,
       name,
@@ -141,7 +141,7 @@ export const UpdatedAccessToken = async (req: Request, res: Response, next: Next
       process.env.REFRESH_TOKEN as string
     ) as JwtPayload;
 
-    const message = "Could not refresh token";
+    const message = "Tidak dapat memperbarui token";
     if (!decoded) {
       return next(new ErrorException("400",message));
     }
@@ -150,7 +150,7 @@ export const UpdatedAccessToken = async (req: Request, res: Response, next: Next
 
     if (!session) {
       return next(
-        new ErrorException("400","Please login for access this resources!")
+        new ErrorException("400","Silahkan login untuk mengakses sumber daya ini!")
       );
     }
 

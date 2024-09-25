@@ -1,5 +1,5 @@
 import useUser from '@/hooks/auth/useUser.hook';
-import Loader from '@/screens/loader/loader';
+import Loader from '@/screens/loader/loader.screen';
 import { Redirect } from 'expo-router'
 import React from 'react'
 

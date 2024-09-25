@@ -98,8 +98,8 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         await axios.post(`${SERVER_URI}/sign-in`, userInfo)
             .then(async (res) => {
-                await AsyncStorage.setItem('access-token', res.data.metaData.accessToken)
-                await AsyncStorage.setItem('refresh-token', res.data.metaData.refreshToken)
+                await AsyncStorage.setItem('access_token', res.data.metaData.accessToken)
+                await AsyncStorage.setItem('refresh_token', res.data.metaData.refreshToken)
                 router.push('/(tabs)')
             }).catch((error) => {
                 if (error.response && error.response.status === 401) {

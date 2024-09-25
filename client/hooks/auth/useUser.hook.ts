@@ -13,6 +13,9 @@ export default function useUser() {
     const subscription = async () => {
       const accessToken = await AsyncStorage.getItem("access_token");
       const refreshToken = await AsyncStorage.getItem("refresh_token");
+      console.log("accessToken",accessToken);
+      console.log("refreshToken",refreshToken);
+      
 
       await axios
         .get(`${SERVER_URI}/me`, {
@@ -22,7 +25,7 @@ export default function useUser() {
           },
         })
         .then((res: any) => {
-          setUser(res.data.user);
+          setUser(res.data.metaData);
           setLoading(false);
         })
         .catch((error: any) => {

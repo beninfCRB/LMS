@@ -5,6 +5,13 @@ export interface IUser {
     email: string;
     password: string;
     name: string;
+    avatar: {
+      public_id: string;
+      url: string;
+    };
+    role: string;
+    isVerified: boolean;
+    courses: Array<{ courseId: string }>;
 }
 
 const IUserSchema = new Schema<IUser>(
@@ -19,6 +26,23 @@ const IUserSchema = new Schema<IUser>(
       },
       name: { type: String, required: true },
       password: { type: String, required: true },
+      avatar: {
+        public_id: String,
+        url: String,
+      },
+      role: {
+        type: String,
+        default: "user",
+      },
+      isVerified: {
+        type: Boolean,
+        default: false,
+      },
+      courses: [
+        {
+          courseId: String,
+        },
+      ],
     },
     { collection: 'user', timestamps: true }
   );
