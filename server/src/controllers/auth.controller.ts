@@ -15,7 +15,7 @@ import ejs from "ejs";
 import sendMail from "../utils/sendMail";
 import path from "path";
 
-export const SignUpController = async (req: Request, res: Response, next: NextFunction) => {
+export const signUpController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, name, password } = req.body;
 
@@ -61,7 +61,7 @@ export const SignUpController = async (req: Request, res: Response, next: NextFu
   } 
 }
 
-export const ActivateUserController = async (req: Request, res: Response, next: NextFunction) => {
+export const activateUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { activation_token, activation_code } = req.body as IActivationRequest;
 
@@ -88,6 +88,8 @@ export const ActivateUserController = async (req: Request, res: Response, next: 
       email,
       name,
       password: hash,
+      role:'user',
+      isVerified:true
     };
     
     const created = await UserModel.create(createUser);
@@ -97,7 +99,7 @@ export const ActivateUserController = async (req: Request, res: Response, next: 
   }
 }
 
-export const SigInController = async (req: Request, res: Response, next: NextFunction) => {
+export const sigInController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
   
@@ -121,6 +123,7 @@ export const SigInController = async (req: Request, res: Response, next: NextFun
       email:userExists.email,
       password:userExists.password,
       name:userExists.name,
+      role:userExists.role ?userExists.role:"user",
       accessToken,
       refreshToken
     }
@@ -133,7 +136,7 @@ export const SigInController = async (req: Request, res: Response, next: NextFun
   }
 }
 
-export const UpdatedAccessToken = async (req: Request, res: Response, next: NextFunction) => {
+export const updatedAccessToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const refresh_token = req.headers["refresh-token"] as string;
     const decoded = jwt.verify(
@@ -166,7 +169,7 @@ export const UpdatedAccessToken = async (req: Request, res: Response, next: Next
   }
 }
 
-export const GetUserIdController = async (req: Request, res: Response, next: NextFunction) => {
+export const getUserIdController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = (req as any).user._id;
 

@@ -5,6 +5,9 @@ import authRouter from './src/routes/auth.route'
 import rateLimit from 'express-rate-limit'
 import { connect } from './src/utils/mongoose.util'
 import { errorHandler } from './src/utils/response/error/error-handler.util'
+import courseRouter from './src/routes/course.route'
+import { upload } from './src/utils/multer.util'
+import listEndpoints from 'express-list-endpoints'
 require("dotenv").config()
 
 export const app = express()
@@ -35,9 +38,11 @@ app.use(
   );
 
 app.use(express.json());
+app.use(upload.single('file'));
 
 app.use('/api/v1',
-  authRouter
+  authRouter,
+  courseRouter
 )
 
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
@@ -49,6 +54,8 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
     err.statusCode = 404
     next(err)
 })
+
+console.log(listEndpoints(app));
 
 app.use(limiter)
 app.use(errorHandler)

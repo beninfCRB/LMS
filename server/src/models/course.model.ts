@@ -1,17 +1,21 @@
 import { model, Model, Schema } from "mongoose";
 
 export interface ICourse extends Document {
+    _id: string;
     name: string;
     description: string;
     categories: string;
     price: number;
     estimatedPrice?: number;
-    thumbnail: object;
+    thumbnail: {
+      public_id:string;
+      url:string;
+    };
     tags: string;
     level: string;
-    demoUrl: string;
-    benefits: { title: string }[];
-    prerequisites: { title: string }[];
+    demoUrl?: string;
+    // benefits: { title: string }[];
+    // prerequisites: { title: string }[];
     // reviews: IReview[];
     // courseData: ICourseData[];
     ratings?: number;
@@ -19,6 +23,7 @@ export interface ICourse extends Document {
   }
 
   const courseSchema = new Schema<ICourse>({
+    _id: { type: String, required: true },
     name: {
       type: String,
       required: true,
@@ -56,12 +61,12 @@ export interface ICourse extends Document {
     },
     demoUrl:{
       type: String,
-      required: true,
+      required: false,
     },
-    benefits: [{title: String}],
-    prerequisites: [{title: String}],
-    // reviews: [reviewSchema],
-    //  courseData: [courseDataSchema],
+    // benefits: [{title: String}],
+    // prerequisites: [{title: String}],
+    // // reviews: [reviewSchema],
+    // //  courseData: [courseDataSchema],
      ratings:{
        type: Number,
        default: 0,
@@ -73,4 +78,4 @@ export interface ICourse extends Document {
   },{timestamps: true});
 
 
-  export const CourseModel: Model<ICourse> = model("course", courseSchema);
+  export const CourseModel: Model<ICourse> = model("courses", courseSchema);

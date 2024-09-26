@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorException } from "../utils/response/error/error-exception.util";
-import { UpdatedAccessToken } from "../controllers/auth.controller";
+import { updatedAccessToken } from "../controllers/auth.controller";
 import { redis } from "../utils/redis.util";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { ErrorCode } from "../utils/response/error/error-code.util";
 
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
     const access_token = req.headers["access-token"] as string;
@@ -19,7 +20,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
       try {
-        await UpdatedAccessToken(req, res, next);
+        await updatedAccessToken(req, res, next);
       } catch (error) {
         return next(error);
       }
@@ -37,3 +38,17 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
       next();
     }
   }
+
+  export const authorizeRoles = (...roles: string[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (!roles.includes((req as any).user?.role || "")) {
+        return next(
+          new ErrorException(
+            ErrorCode.Unauthenticated,
+            `Role: ${(req as any).user?.role} tidak diizinkan untuk mengakses sumber daya ini`,
+          )
+        );
+      }
+      next();
+    };
+  };

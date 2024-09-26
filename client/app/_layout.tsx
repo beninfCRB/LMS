@@ -51,7 +51,7 @@ function RootLayoutNav() {
         <Stack.Screen name='(routes)/auth/forgot-password/index' />
         <Stack.Screen name='(routes)/auth/sign-up/index' />
         <Stack.Screen name='(routes)/auth/verify-account/index' />
-        <Stack.Screen name='(routes)/course-detail/index' />
+        <Stack.Screen name='(routes)/course-details/index' />
       </Stack>
     </ToastProvider>
   );
