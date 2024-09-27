@@ -12,5 +12,12 @@ type User = {
     name: string;
     email: string;
     password?: string;
-    avatar?:string;
+    avatar?:{
+      url:string
+    };
   };
+
+  type BannerDataTypes = {
+    bannerImageUrl: any;
+  };
+  

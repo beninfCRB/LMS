@@ -8,6 +8,8 @@ export default function useUser() {
   const [user, setUser] = useState<User>();
   const [error, setError] = useState("");
   const [refetch, setRefetch] = useState(false);
+  console.log('loading==>',loading);
+  
 
   useEffect(() => {
     const subscription = async () => {
@@ -15,7 +17,6 @@ export default function useUser() {
       const refreshToken = await AsyncStorage.getItem("refresh_token");
       console.log("accessToken",accessToken);
       console.log("refreshToken",refreshToken);
-      
 
       await axios
         .get(`${SERVER_URI}/me`, {

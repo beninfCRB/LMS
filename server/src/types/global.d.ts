@@ -18,3 +18,7 @@ export interface IActivationUser {
   user: IUser; 
   activationCode: string;
 }
+
+export interface IUpdateProfilePicture {
+  avatar: string;
+}

@@ -1,1 +1,1 @@
-export const SERVER_URI=`http://10.20.30.130:6868/api/v1`
+export const SERVER_URI=`http://172.18.128.1:6868/api/v1`

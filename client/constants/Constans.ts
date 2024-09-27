@@ -22,3 +22,19 @@ export const onboardingSwiperData: onboardingSwipperDataType[] = [
         image: require("@/assets/onboarding/intro_3.png"),
     },
 ]
+
+export const bannerData: BannerDataTypes[] = [
+    {
+      bannerImageUrl: require("../assets/banner/1.jpg"),
+    },
+    {
+      bannerImageUrl: require("../assets/banner/2.webp"),
+    },
+    {
+      bannerImageUrl: require("../assets/banner/3.webp"),
+    },
+    {
+      bannerImageUrl: require("../assets/banner/4.webp"),
+    },
+  ];
+  
