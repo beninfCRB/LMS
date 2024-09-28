@@ -14,8 +14,8 @@ export interface ICourse extends Document {
     tags: string;
     level: string;
     demoUrl?: string;
-    // benefits: { title: string }[];
-    // prerequisites: { title: string }[];
+    benefits: { title: string }[];
+    prerequisites: { title: string }[];
     // reviews: IReview[];
     // courseData: ICourseData[];
     ratings?: number;
@@ -63,8 +63,8 @@ export interface ICourse extends Document {
       type: String,
       required: false,
     },
-    // benefits: [{title: String}],
-    // prerequisites: [{title: String}],
+    benefits: [{title: String}],
+    prerequisites: [{title: String}],
     // // reviews: [reviewSchema],
     // //  courseData: [courseDataSchema],
      ratings:{

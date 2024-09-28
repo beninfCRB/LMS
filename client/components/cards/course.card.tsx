@@ -1,4 +1,5 @@
 import { CardStyles } from "@/styles/component/cards/cards.styles";
+import { rupiah } from "@/utils/rupiah.util";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
@@ -76,17 +77,17 @@ export default function CourseCard({ item }: { item: CoursesType }) {
         >
           <View style={{ flexDirection: "row" }}>
             <Text style={{ paddingTop: 10, fontSize: 18, fontWeight: "600" }}>
-              ${item?.price}
+              {rupiah(item?.price)}
             </Text>
             <Text
               style={{
                 paddingLeft: 5,
                 textDecorationLine: "line-through",
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: "400",
               }}
             >
-              ${item?.estimatedPrice}
+              {rupiah(item?.estimatedPrice as number)}
             </Text>
           </View>
           <View

@@ -58,7 +58,7 @@ export const loginStyles = StyleSheet.create({
         marginTop: -1
     },
     containerHeight: {
-        height: hp("40%"),
+        height: hp("80%"),
         gap: 25
     },
     forgotSection: {

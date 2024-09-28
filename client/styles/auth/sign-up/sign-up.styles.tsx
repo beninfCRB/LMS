@@ -58,7 +58,7 @@ export const signUpStyles = StyleSheet.create({
         marginTop: -1
     },
     containerHeight: {
-        height: hp("60%"),
+        height: hp("80%"),
         gap: 25
     },
     forgotSection: {

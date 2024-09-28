@@ -15,6 +15,9 @@ type User = {
     avatar?:{
       url:string
     };
+    courses: any;
+  createdAt: Date;
+  updatedAt: Date;
   };
 
   type BannerDataTypes = {

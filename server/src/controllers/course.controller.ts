@@ -10,13 +10,22 @@ import { ulid } from "ulid";
 
 export const uploadCourse = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body;
+      const data = req.body;   
       const thumbnail = (req as any).file
       const b64 = Buffer.from(thumbnail.buffer).toString("base64");
       const dataURI = "data:" + (req as any).file.mimetype + ";base64," + b64;
       
       data._id = ulid()
-      if (dataURI) {
+
+      if (typeof data.prerequisites === 'string') {
+        data.prerequisites = JSON.parse(data.prerequisites);
+      }
+
+      if (typeof data.benefits === 'string') {
+        data.benefits = JSON.parse(data.benefits);
+      }
+      
+      if (thumbnail.buffer) {
         const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
           folder: "courses",
         });
@@ -47,7 +56,7 @@ export const editCourse = async (req: Request, res: Response, next: NextFunction
 
       const courseData = await CourseModel.findById(courseId);
 
-      if (dataURI && courseData && courseData.thumbnail.public_id) {
+      if (thumbnail && dataURI && courseData && courseData.thumbnail.public_id) {
         await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
 
         const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
@@ -58,7 +67,7 @@ export const editCourse = async (req: Request, res: Response, next: NextFunction
           public_id: myCloud.public_id,
           url: myCloud.secure_url,
         };
-      } else if(dataURI && courseData && !courseData.thumbnail.public_id) {
+      } else if(thumbnail && dataURI && courseData && !courseData.thumbnail.public_id) {
         const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
           folder: "courses",
         });

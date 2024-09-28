@@ -1,18 +1,18 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
 import useUser from '@/hooks/auth/useUser.hook';
-import { Raleway_600SemiBold, Raleway_700Bold } from '@expo-google-fonts/raleway';
-import { useFonts } from 'expo-font';
-import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import Loader from '@/screens/loader/loader.screen';
-import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from "expo-image-picker"
-import * as FileSystem from "expo-file-system"
-import axios from 'axios';
 import { SERVER_URI } from '@/utils/uri.util';
+import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import { Raleway_600SemiBold, Raleway_700Bold } from '@expo-google-fonts/raleway';
+import { AntDesign, FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import * as FileSystem from "expo-file-system";
+import { useFonts } from 'expo-font';
+import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function ProfileScreen() {
   const { user, loading, setRefetch } = useUser();
@@ -34,7 +34,7 @@ export default function ProfileScreen() {
   const logoutHandler = async () => {
     await AsyncStorage.removeItem("access_token");
     await AsyncStorage.removeItem("refresh_token");
-    router.push("/(routes)/login");
+    router.push("/(routes)/auth/login");
   };
 
   const pickImage = async () => {
@@ -94,7 +94,7 @@ export default function ProfileScreen() {
               <View style={{ position: "relative" }}>
                 <Image
                   source={{
-                    uri: image || user?.avatar?.url || "https://res.cloudinary.com/dffgqhwzn/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png",
+                    uri: image || user?.avatar?.url || "https://res.cloudinary.com/dffgqhwzn/image/upload/v1727265407/samples/shoe.jpg",
                   }}
                   style={{ width: 90, height: 90, borderRadius: 100 }}
                 />
@@ -111,6 +111,7 @@ export default function ProfileScreen() {
                     alignItems: "center",
                     justifyContent: "center"
                   }}
+                  onPress={pickImage}
                 >
                   <Ionicons name='camera-outline' size={25} />
                 </TouchableOpacity>
