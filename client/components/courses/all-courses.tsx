@@ -70,7 +70,9 @@ export default function AllCourses() {
                 data={courses}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item._id.toString()}
-                renderItem={({ item }) => <CourseCard item={item} />}
+                renderItem={({ item }) => <CourseCard key={item._id.toString()} item={item} />}
+                nestedScrollEnabled={true}
+                scrollEnabled={false}
             />
         </View>
     )

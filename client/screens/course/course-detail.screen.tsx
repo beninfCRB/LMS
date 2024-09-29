@@ -142,9 +142,21 @@ export default function CourseDetailScreen() {
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
                                 Manfaat kursus
                             </Text>
-                            {
-
-                            }
+                            {courseData?.benefits.map(
+                                (item: BenefitType, index: number) => (
+                                    <View
+                                        key={index}
+                                        style={{
+                                            flexDirection: "row",
+                                            width: "95%",
+                                            paddingVertical: 5
+                                        }}
+                                    >
+                                        <Ionicons name='checkmark-done-outline' size={18} />
+                                        <Text style={{ paddingLeft: 5, fontSize: 16 }}>{item.title}</Text>
+                                    </View>
+                                )
+                            )}
                         </View>
                     </ScrollView>
                 </LinearGradient>

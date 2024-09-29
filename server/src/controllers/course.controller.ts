@@ -56,7 +56,7 @@ export const editCourse = async (req: Request, res: Response, next: NextFunction
 
       const courseData = await CourseModel.findById(courseId);
 
-      if (thumbnail && dataURI && courseData && courseData.thumbnail.public_id) {
+      if (thumbnail.buffer && dataURI && courseData && courseData.thumbnail.public_id) {
         await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
 
         const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
@@ -67,7 +67,7 @@ export const editCourse = async (req: Request, res: Response, next: NextFunction
           public_id: myCloud.public_id,
           url: myCloud.secure_url,
         };
-      } else if(thumbnail && dataURI && courseData && !courseData.thumbnail.public_id) {
+      } else if(thumbnail.buffer && dataURI && courseData && !courseData.thumbnail.public_id) {
         const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
           folder: "courses",
         });

@@ -9,6 +9,7 @@ import courseRouter from './src/routes/course.route'
 import { upload } from './src/utils/multer.util'
 import listEndpoints from 'express-list-endpoints'
 import userRouter from './src/routes/user.route'
+import layoutRouter from './src/routes/layout.route'
 require("dotenv").config()
 
 export const app = express()
@@ -44,7 +45,8 @@ app.use(upload.single('file'));
 app.use('/api/v1',
   authRouter,
   courseRouter,
-  userRouter
+  userRouter,
+  layoutRouter
 )
 
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
