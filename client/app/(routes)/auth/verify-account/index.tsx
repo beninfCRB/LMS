@@ -3,6 +3,6 @@ import React from 'react'
 
 export default function VerifyAccount() {
     return (
-        <VerifyAccountScreen />
+        <VerifyAccountScreen path='verify-account' message='Akun Anda berhasil diaktifkan!' />
     )
 }

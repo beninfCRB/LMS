@@ -135,7 +135,7 @@ export default function SignUpScreen() {
             })
             .catch((error) => {
                 setButtonSpinner(false);
-                Toast.show("Email already exist!", {
+                Toast.show(error.response.data.metaData, {
                     type: "danger",
                 });
             });

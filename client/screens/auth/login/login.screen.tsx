@@ -201,7 +201,7 @@ export default function LoginScreen() {
                             <Text
                                 style={[loginStyles.forgotSection, { fontFamily: "Nunito_600SemiBold" }]}
                             >
-                                Lupa Password?
+                                Lupa Kata Sandi?
                             </Text>
                         </TouchableOpacity>
                         <ButtonActivity

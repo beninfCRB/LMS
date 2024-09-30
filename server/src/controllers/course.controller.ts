@@ -99,7 +99,7 @@ export const deleteCourse =   async (req: Request, res: Response, next: NextFunc
     const course = await CourseModel.findById(id);
 
     if (!course) {
-      return next(new ErrorException("course not found"));
+      return next(new ErrorException(ErrorCode.NotFound, "Kursus tidak ditemukan"));
     }
 
     await cloudinary.v2.uploader.destroy(course.thumbnail?.public_id)

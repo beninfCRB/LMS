@@ -8,7 +8,7 @@ import { SERVER_URI } from '@/utils/uri.util'
 import { Toast } from 'react-native-toast-notifications'
 import axios from 'axios'
 
-export default function VerifyAccountScreen() {
+export default function VerifyAccountScreen({ path, message }: { path: string, message: string }) {
     const [code, setCode] = useState(new Array(4).fill(""))
 
     const inputs = useRef<any>([...Array(4).map(() => React.createRef())])
@@ -32,19 +32,19 @@ export default function VerifyAccountScreen() {
         const activation_token = await AsyncStorage.getItem("activation_token");
 
         await axios
-            .post(`${SERVER_URI}/activate-user`, {
+            .post(`${SERVER_URI}/${path}`, {
                 activation_token,
                 activation_code: otp,
             })
             .then((res: any) => {
-                Toast.show("Your account activated successfully!", {
+                Toast.show(message, {
                     type: "success",
                 });
                 setCode(new Array(4).fill(""));
                 router.push("/(routes)/auth/login");
             })
             .catch((error) => {
-                Toast.show("Your OTP is not valid or expired!", {
+                Toast.show(error.response.data.metaData, {
                     type: "danger",
                 });
             });

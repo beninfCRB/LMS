@@ -33,4 +33,9 @@ export const verifyAccountStyle = StyleSheet.create({
         borderRadius: 10,
         fontSize: 20,
     },
+    errorText: {
+        color: "red",
+        fontSize: 11,
+        marginTop: -1
+    },
 })

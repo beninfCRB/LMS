@@ -64,7 +64,7 @@ export const addLayout = async (req:Request, res:Response, next:NextFunction) =>
             });
         }
         res.status(200).json({
-            message: "Layout created successfully",
+            message: "Layout berhasil dibuat",
         });
     }
     catch (error:any) {
@@ -136,7 +136,7 @@ export const editLayout = async (req:Request, res:Response, next:NextFunction) =
             });
         }
         res.status(200).json({
-            message: "Layout Updated successfully",
+            message: "Layout berhasil diperbarui",
         });
     }
     catch (error:any) {

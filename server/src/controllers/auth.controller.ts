@@ -1,19 +1,20 @@
+import ejs from "ejs";
 import { NextFunction, Request, Response } from "express";
-import { IUser, UserModel } from "../models/user.model";
-import { ulid } from "ulid";
-import { ErrorException } from "../utils/response/error/error-exception.util";
-import { ErrorCode } from "../utils/response/error/error-code.util";
-import { comparePassword, passwordHash } from "../utils/password.util";
-import { ResponseData } from "../utils/response/success/success-response.util";
-import { generateAccessToken, generateRefreshToken } from "../utils/token.util";
-import { SuccessCode } from "../utils/response/success/success-code.util";
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { redis } from "../utils/redis.util";
+import path from "path";
+import { ulid } from "ulid";
+import { UserModel } from "../models/user.model";
 import { IActivationRequest, IActivationUser, IRegistrationBody } from "../types/global";
 import { activateUser, createActivationToken } from "../utils/activate.util";
-import ejs from "ejs";
+import { accessTokenOptions, refreshTokenOptions } from "../utils/cookie.util";
+import { comparePassword, passwordHash } from "../utils/password.util";
+import { redis } from "../utils/redis.util";
+import { ErrorCode } from "../utils/response/error/error-code.util";
+import { ErrorException } from "../utils/response/error/error-exception.util";
+import { SuccessCode } from "../utils/response/success/success-code.util";
+import { ResponseData } from "../utils/response/success/success-response.util";
 import sendMail from "../utils/sendMail";
-import path from "path";
+import { generateAccessToken, generateRefreshToken } from "../utils/token.util";
 
 export const signUpController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -49,7 +50,6 @@ export const signUpController = async (req: Request, res: Response, next: NextFu
         });
 
         res.status(201).json({
-          success: true,
           message: `Silahkan periksa email Anda: ${user.email} untuk mengaktifkan akun Anda!`,
           activationToken: activationToken.token,
         });
@@ -128,6 +128,8 @@ export const sigInController = async (req: Request, res: Response, next: NextFun
       refreshToken
     }
    
+    res.cookie("access_token", accessToken, { ...accessTokenOptions, sameSite: 'none' });
+    res.cookie("refresh_token", refreshToken, { ...refreshTokenOptions, sameSite: 'none' });
     redis.set(user._id, JSON.stringify(user) as any);
 
     res.send(new ResponseData(SuccessCode.Created,user));
@@ -179,6 +181,101 @@ export const getUserIdController = async (req: Request, res: Response, next: Nex
     const user = JSON.parse(userJson);
     res.send(new ResponseData(SuccessCode.Sucessed,user))
   }
+  } catch (error: any) {
+    return next(new ErrorException("400",error.message));
+  }
+}
+
+export const forgotPasswordController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email,oldPassword,newPassword } = req.body;
+
+    const userExists = await UserModel.findOne({ email: email });
+    if (!userExists) {
+      return next(new ErrorException(ErrorCode.NotFound, { email }));
+    }
+
+    const isOldPasswordMatch = comparePassword(oldPassword,userExists.password);
+      if (!isOldPasswordMatch) {
+          return next(new ErrorException("400","Password lama tidak valid"));
+      }
+
+    const user = {
+      name:userExists.name,
+      email,
+      password:newPassword,
+    };
+    
+    const activationToken = createActivationToken(user);
+console.log('activationToken===>',activationToken);
+
+    const activationCode = activationToken.activationCode;
+
+    const data = { user: { name: user.name }, activationCode };
+      const html = await ejs.renderFile(
+        path.join(__dirname, "../mails/activation-mail.ejs"),
+        data
+      );
+
+      try {
+        await sendMail({
+          email: user.email,
+          subject: "Atur ulang kata sandi Akun Anda",
+          template: "forgot-password-mail.ejs",
+          data,
+        });
+
+        res.status(201).json({
+          message: `Silahkan periksa email Anda: ${user.email} untuk atur ulang kata sandi akun Anda!`,
+          activationToken: activationToken.token,
+        });
+      } catch (error: any) {
+        return next(new ErrorException("400",error.message));
+      }
+  } catch (error:any) {
+    return new ErrorException(ErrorCode.UnknownError)
+  } 
+}
+
+export const newPasswordController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { activation_token, activation_code } = req.body as IActivationRequest;
+
+    const newUser: IActivationUser = activateUser(
+      activation_token,
+      process.env.ACTIVATION_SECRET as string
+    );
+    console.log('newUser===>',newUser);
+    
+    
+    if (newUser.activationCode !== activation_code) {
+       return next(new ErrorException(ErrorCode.Unauthenticated, "Kode konfirmasi tidak valid"));
+    }
+
+    const { email, password } = newUser.user;
+
+    const existUser = await UserModel.findOne({ email });
+
+    if (!existUser) {
+      return next(new ErrorException("400","Email tidak terdaftar"));
+    }
+    
+    const hash = passwordHash(password);
+
+    const data = {
+      password: hash,
+    };
+    console.log('data===>',data);
+    
+    
+    const updated = await UserModel.findByIdAndUpdate(
+existUser._id,
+{
+  $set: data,
+},
+{ new: true }
+    );
+    res.send(new ResponseData(SuccessCode.Updated,updated))
   } catch (error: any) {
     return next(new ErrorException("400",error.message));
   }
