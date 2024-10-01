@@ -69,5 +69,13 @@ export const CourseDetailStyles = StyleSheet.create({
         marginTop: 10,
         textAlign: "justify",
         fontFamily: "Nunito_500Medium"
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 25,
+        marginHorizontal: 16,
+        backgroundColor: "#E1E9F8",
+        borderRadius: 50
     }
 })

@@ -99,7 +99,7 @@ export const deleteCourse =   async (req: Request, res: Response, next: NextFunc
     const course = await CourseModel.findById(id);
 
     if (!course) {
-      return next(new ErrorException(ErrorCode.NotFound, "Kursus tidak ditemukan"));
+      return next(new ErrorException(ErrorCode.NotFound, "Learning tidak ditemukan"));
     }
 
     await cloudinary.v2.uploader.destroy(course.thumbnail?.public_id)
@@ -109,7 +109,7 @@ export const deleteCourse =   async (req: Request, res: Response, next: NextFunc
     await redis.del(id);
 
     res.status(200).json({
-      message: "Kursus berhasil dihapus",
+      message: "Learning berhasil dihapus",
     });
   } catch (error: any) {
     return next(new ErrorException(error.message));

@@ -51,7 +51,7 @@ export default function AllCourses() {
                         fontFamily: "Raleway_700Bold"
                     }}
                 >
-                    Kursus populer
+                    Learning populer
                 </Text>
                 <TouchableOpacity onPress={() => router.push("/(tabs)/courses")}>
                     <Text

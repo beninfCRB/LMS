@@ -144,6 +144,7 @@ export default function ProfileScreen() {
                   justifyContent: "space-between",
                   marginBottom: 20,
                 }}
+                onPress={() => router.push("/(routes)/profile-details")}
               >
                 <View
                   style={{
@@ -226,7 +227,7 @@ export default function ProfileScreen() {
                     <Text
                       style={{ fontSize: 16, fontFamily: "Nunito_700Bold" }}
                     >
-                      Kursus yang terdaftar
+                      Learning yang terdaftar
                     </Text>
                     <Text
                       style={{
@@ -234,7 +235,7 @@ export default function ProfileScreen() {
                         fontFamily: "Nunito_400Regular",
                       }}
                     >
-                      Semua kursus yang terdaftar
+                      Semua Learning yang terdaftar
                     </Text>
                   </View>
                 </View>

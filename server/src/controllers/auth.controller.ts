@@ -207,7 +207,6 @@ export const forgotPasswordController = async (req: Request, res: Response, next
     };
     
     const activationToken = createActivationToken(user);
-console.log('activationToken===>',activationToken);
 
     const activationCode = activationToken.activationCode;
 
@@ -245,8 +244,6 @@ export const newPasswordController = async (req: Request, res: Response, next: N
       activation_token,
       process.env.ACTIVATION_SECRET as string
     );
-    console.log('newUser===>',newUser);
-    
     
     if (newUser.activationCode !== activation_code) {
        return next(new ErrorException(ErrorCode.Unauthenticated, "Kode konfirmasi tidak valid"));
@@ -265,8 +262,6 @@ export const newPasswordController = async (req: Request, res: Response, next: N
     const data = {
       password: hash,
     };
-    console.log('data===>',data);
-    
     
     const updated = await UserModel.findByIdAndUpdate(
 existUser._id,

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import useUser from '@/hooks/auth/useUser.hook';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -11,10 +11,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { CourseDetailStyles } from '@/styles/courses/course-detail/course-detail.style';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { rupiah } from '@/utils/rupiah.util';
+import CourseLesson from '@/components/courses/course.lesson';
+import ReviewCard from '@/components/cards/review.card';
 
 export default function CourseDetailScreen() {
 
-    const [activeButton, setActiveButton] = useState("About");
+    const [activeButton, setActiveButton] = useState("Tentang");
     const { user, loading } = useUser();
     const [isExpanded, setIsExpanded] = useState(false);
     const { item } = useLocalSearchParams();
@@ -120,7 +122,7 @@ export default function CourseDetailScreen() {
                         </View>
                         <View style={{ padding: 10 }}>
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                                Prasyaratan Kursus
+                                Prasyaratan Learning
                             </Text>
                             {courseData?.prerequisites.map(
                                 (item: PrerequisiteType, index: number) => (
@@ -140,7 +142,7 @@ export default function CourseDetailScreen() {
                         </View>
                         <View style={{ padding: 10 }}>
                             <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                                Manfaat kursus
+                                Manfaat Learning
                             </Text>
                             {courseData?.benefits.map(
                                 (item: BenefitType, index: number) => (
@@ -158,9 +160,129 @@ export default function CourseDetailScreen() {
                                 )
                             )}
                         </View>
+                        <View
+                            style={CourseDetailStyles.buttonRow}
+                        >
+                            <TouchableOpacity
+                                style={{
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 42,
+                                    backgroundColor:
+                                        activeButton === "Tentang" ? "#2467EC" : "transparent",
+                                    borderRadius: activeButton === "Tentang" ? 50 : 0,
+                                }}
+                                onPress={() => setActiveButton("Tentang")}
+                            >
+                                <Text
+                                    style={{
+                                        color: activeButton === "Tentang" ? "#fff" : "#000",
+                                        fontFamily: "Nunito_600SemiBold",
+                                    }}
+                                >
+                                    Tentang
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 42,
+                                    backgroundColor:
+                                        activeButton === "Pelajaran" ? "#2467EC" : "transparent",
+                                    borderRadius: activeButton === "Pelajaran" ? 50 : 0,
+                                }}
+                                onPress={() => setActiveButton("Pelajaran")}
+                            >
+                                <Text
+                                    style={{
+                                        color: activeButton === "Pelajaran" ? "#fff" : "#000",
+                                        fontFamily: "Nunito_600SemiBold",
+                                    }}
+                                >
+                                    Pelajaran
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 42,
+                                    backgroundColor:
+                                        activeButton === "Ulasan" ? "#2467EC" : "transparent",
+                                    borderRadius: activeButton === "Ulasan" ? 50 : 0,
+                                }}
+                                onPress={() => setActiveButton("Ulasan")}
+                            >
+                                <Text
+                                    style={{
+                                        color: activeButton === "Ulasan" ? "#fff" : "#000",
+                                        fontFamily: "Nunito_600SemiBold",
+                                    }}
+                                >
+                                    Ulasan
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        {activeButton === "Tentang" && (
+                            <View
+                                style={{
+                                    marginHorizontal: 16,
+                                    marginVertical: 25,
+                                    paddingHorizontal: 10,
+                                }}
+                            >
+                                <Text style={{ fontSize: 18, fontFamily: "Raleway_700Bold" }}>
+                                    Mengenai Learning
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: "#525258",
+                                        fontSize: 16,
+                                        marginTop: 10,
+                                        textAlign: "justify",
+                                        fontFamily: "Nunito_500Medium",
+                                    }}
+                                >
+                                    {isExpanded
+                                        ? courseData?.description
+                                        : courseData?.description.slice(0, 302)}
+                                </Text>
+                                {courseData?.description.length > 302 && (
+                                    <TouchableOpacity
+                                        style={{ marginTop: 3 }}
+                                        onPress={() => setIsExpanded(!isExpanded)}
+                                    >
+                                        <Text
+                                            style={{
+                                                color: "#2467EC",
+                                                fontSize: 14,
+                                            }}
+                                        >
+                                            {isExpanded ? "Show Less" : "Show More"}
+                                            {isExpanded ? "-" : "+"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        )}
+                        {activeButton === "Pelajaran" && (
+                            <View style={{ marginHorizontal: 16, marginVertical: 25 }}>
+                                <CourseLesson courseDetails={courseData} />
+                            </View>
+                        )}
+                        {activeButton === "Ulasan" && (
+                            <View style={{ marginHorizontal: 16, marginVertical: 25 }}>
+                                <View style={{ rowGap: 25 }}>
+                                    {courseData?.reviews?.map(
+                                        (item: ReviewType, index: number) => (
+                                            <ReviewCard item={item} key={index} />
+                                        )
+                                    )}
+                                </View>
+                            </View>
+                        )}
                     </ScrollView>
-                </LinearGradient>
-            )}
+                </LinearGradient >
+            )
+            }
         </>
     )
 }

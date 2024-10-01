@@ -51,7 +51,30 @@ function RootLayoutNav() {
         <Stack.Screen name='(routes)/auth/forgot-password/index' />
         <Stack.Screen name='(routes)/auth/sign-up/index' />
         <Stack.Screen name='(routes)/auth/verify-account/index' />
-        <Stack.Screen name='(routes)/course-details/index' options={{ headerShown: true, title: "Detail Kursus", headerBackTitle: "Kembali" }} />
+        <Stack.Screen
+          name="(routes)/profile-details/index"
+          options={{
+            headerShown: true,
+            title: "Detai Profil",
+            headerBackTitle: "Kembali",
+          }}
+        />
+        <Stack.Screen
+          name='(routes)/course-details/index'
+          options={{
+            headerShown: true,
+            title: "Detail Learning",
+            headerBackTitle: "Kembali"
+          }}
+        />
+        <Stack.Screen
+          name="(routes)/enrolled-courses/index"
+          options={{
+            headerShown: true,
+            title: "Enrolled Learning",
+            headerBackTitle: "Kembali",
+          }}
+        />
       </Stack>
     </ToastProvider>
   );

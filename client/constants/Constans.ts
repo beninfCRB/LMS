@@ -9,7 +9,7 @@ export const onboardingSwiperData: onboardingSwipperDataType[] = [
     {
         id: 2,
         title: "Temukan minat Anda, tingkatkan keahlian Anda",
-        description: "Kami komprehensif kursus dan ahli kami",
+        description: "Kami komprehensif Learning dan ahli kami",
         sortDescription: "instruktur untuk memandu setiap langkah.",
         image: require("@/assets/onboarding/intro_2.png"),
     },
@@ -18,7 +18,7 @@ export const onboardingSwiperData: onboardingSwipperDataType[] = [
         title: "Dapatkan sertifikat online dengan keterampilan yang tidak biasa",
         description: "Untuk mendapatkan sertifikat online, individu",
         sortDescription: "biasanya perlu menyelesaikan yang diperlukan",
-        sortDescription2: "kursus & penilaian.",
+        sortDescription2: "Learning & penilaian.",
         image: require("@/assets/onboarding/intro_3.png"),
     },
 ]

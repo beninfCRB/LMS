@@ -17,7 +17,7 @@ export default function TabsLayout() {
               title = "Cari";
             } else if (route.name === "courses/index") {
               iconName = require("@/assets/icons/BookBookmark.png");
-              title = "Kursus";
+              title = "Learning";
             } else if (route.name === "profile/index") {
               iconName = require("@/assets/icons/User.png");
               title = "Profil";
