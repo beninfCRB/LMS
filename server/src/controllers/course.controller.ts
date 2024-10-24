@@ -9,90 +9,90 @@ import { redis } from "../utils/redis.util";
 import { ulid } from "ulid";
 
 export const uploadCourse = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const data = req.body;   
-      const thumbnail = (req as any).file
-      const b64 = Buffer.from(thumbnail.buffer).toString("base64");
-      const dataURI = "data:" + (req as any).file.mimetype + ";base64," + b64;
-      
-      data._id = ulid()
+  try {
+    const data = req.body;
+    const thumbnail = (req as any).file
+    const b64 = Buffer.from(thumbnail.buffer).toString("base64");
+    const dataURI = "data:" + (req as any).file.mimetype + ";base64," + b64;
 
-      if (typeof data.prerequisites === 'string') {
-        data.prerequisites = JSON.parse(data.prerequisites);
-      }
+    data._id = ulid()
 
-      if (typeof data.benefits === 'string') {
-        data.benefits = JSON.parse(data.benefits);
-      }
-      
-      if (thumbnail.buffer) {
-        const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
-          folder: "courses",
-        });
-
-        data.thumbnail = {
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
-        };
-        data.demoUrl = myCloud.secure_url
-      }
-      const course = await CourseModel.create(data);
-
-      res.send(new ResponseData(SuccessCode.Created,course))
-    } catch (error: any) {
-      return next(new ErrorException(ErrorCode.UnknownError,error.message));
+    if (typeof data.prerequisites === 'string') {
+      data.prerequisites = JSON.parse(data.prerequisites);
     }
+
+    if (typeof data.benefits === 'string') {
+      data.benefits = JSON.parse(data.benefits);
+    }
+
+    if (thumbnail.buffer) {
+      const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
+        folder: "courses",
+      });
+
+      data.thumbnail = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+      data.demoUrl = myCloud.secure_url
+    }
+    const course = await CourseModel.create(data);
+
+    res.send(new ResponseData(SuccessCode.Created, "", course))
+  } catch (error: any) {
+    return next(new ErrorException(ErrorCode.UnknownError, error.message));
   }
+}
 
 export const editCourse = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const data = req.body;
+  try {
+    const data = req.body;
 
-      const thumbnail = (req as any).file
-      const b64 = Buffer.from(thumbnail.buffer).toString("base64");
-      const dataURI = "data:" + (req as any).file.mimetype + ";base64," + b64;
+    const thumbnail = (req as any).file
+    const b64 = Buffer.from(thumbnail.buffer).toString("base64");
+    const dataURI = "data:" + (req as any).file.mimetype + ";base64," + b64;
 
-      const courseId = req.params.id;
+    const courseId = req.params.id;
 
-      const courseData = await CourseModel.findById(courseId);
+    const courseData = await CourseModel.findById(courseId);
 
-      if (thumbnail.buffer && dataURI && courseData && courseData.thumbnail.public_id) {
-        await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
+    if (thumbnail.buffer && dataURI && courseData && courseData.thumbnail.public_id) {
+      await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
 
-        const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
-          folder: "courses",
-        });
+      const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
+        folder: "courses",
+      });
 
-        data.thumbnail = {
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
-        };
-      } else if(thumbnail.buffer && dataURI && courseData && !courseData.thumbnail.public_id) {
-        const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
-          folder: "courses",
-        });
+      data.thumbnail = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    } else if (thumbnail.buffer && dataURI && courseData && !courseData.thumbnail.public_id) {
+      const myCloud = await cloudinary.v2.uploader.upload(dataURI, {
+        folder: "courses",
+      });
 
-        data.thumbnail = {
-          public_id: myCloud.public_id,
-          url: myCloud.secure_url,
-        };
-      }
-
-      const course = await CourseModel.findByIdAndUpdate(
-        courseId,
-        {
-          $set: data,
-        },
-        { new: true }
-      );
-
-      res.send(new ResponseData(SuccessCode.Updated,course))
-    } catch (error: any) {
-      return next(new ErrorException(ErrorCode.UnknownError,error.message));
+      data.thumbnail = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
     }
-  }
 
-export const deleteCourse =   async (req: Request, res: Response, next: NextFunction) => {
+    const course = await CourseModel.findByIdAndUpdate(
+      courseId,
+      {
+        $set: data,
+      },
+      { new: true }
+    );
+
+    res.send(new ResponseData(SuccessCode.Updated, "", course))
+  } catch (error: any) {
+    return next(new ErrorException(ErrorCode.UnknownError, error.message));
+  }
+}
+
+export const deleteCourse = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
 
@@ -117,36 +117,36 @@ export const deleteCourse =   async (req: Request, res: Response, next: NextFunc
 }
 
 export const getSingleCourse = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const courseId = req.params.id;
+  try {
+    const courseId = req.params.id;
 
-      const isCacheExist = await redis.get(courseId);
+    const isCacheExist = await redis.get(courseId);
 
-      if (isCacheExist) {
-        const course = JSON.parse(isCacheExist);
-        res.send(new ResponseData(SuccessCode.Sucessed,course));
-      } else {
-        const course = await CourseModel.findById(req.params.id).select(
-          "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
-        );
-
-        await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
-
-        res.send(new ResponseData(SuccessCode.Sucessed,course));
-      }
-    } catch (error: any) {
-        return next(new ErrorException(ErrorCode.UnknownError,error.message));
-    }
-  }
-
-export const getAllCourse = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const courses = await CourseModel.find().select(
+    if (isCacheExist) {
+      const course = JSON.parse(isCacheExist);
+      res.send(new ResponseData(SuccessCode.Sucessed, course));
+    } else {
+      const course = await CourseModel.findById(req.params.id).select(
         "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
       );
 
-      res.send(new ResponseData(SuccessCode.Sucessed,courses))
-    } catch (error: any) {
-        return next(new ErrorException(ErrorCode.UnknownError,error.message));
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
+
+      res.send(new ResponseData(SuccessCode.Sucessed, "", course));
     }
+  } catch (error: any) {
+    return next(new ErrorException(ErrorCode.UnknownError, error.message));
   }
+}
+
+export const getAllCourse = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const courses = await CourseModel.find().select(
+      "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
+    );
+
+    res.send(new ResponseData(SuccessCode.Sucessed, "", courses))
+  } catch (error: any) {
+    return next(new ErrorException(ErrorCode.UnknownError, error.message));
+  }
+}

@@ -1,13 +1,15 @@
+import { Document, HydratedDocument } from "mongoose";
 import { SuccessCode } from "./success-code.util";
 
-export class ResponseData extends Error {
+export class ResponseData {
+    public name: string = "";
     public status: number = 200;
+    public message: string = "";
     public metaData: any = null;
-    constructor(code: string = SuccessCode.Sucessed, metaData: any = null) {
-        super(code);
-        Object.setPrototypeOf(this, new.target.prototype);
+    constructor(code: string = SuccessCode.Sucessed, message: string = "", metaData: any | Document<any, {}, any> = null) {
         this.name = code;
         this.status = 200;
+        this.message = message;
         this.metaData = metaData;
         switch (code) {
             case SuccessCode.Created:

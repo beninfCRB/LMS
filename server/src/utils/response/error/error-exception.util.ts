@@ -2,12 +2,14 @@ import { ErrorCode } from "./error-code.util";
 
 export class ErrorException extends Error {
     public status: number = 500;
+    public message: string = ""
     public metaData: any = null;
-    constructor(code: string = ErrorCode.UnknownError, metaData: any = null) {
+    constructor(code: string = ErrorCode.UnknownError, message: string | any = "", metaData: any = null) {
         super(code);
         Object.setPrototypeOf(this, new.target.prototype);
         this.name = code;
         this.status = 500;
+        this.message = message;
         this.metaData = metaData;
         switch (code) {
             case ErrorCode.Unauthenticated:
